@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Registro</title>
+ <link rel="stylesheet" href="{{ asset('css/registro.css') }}">
+   
 </head>
 <body>
+    <div>
     <h1>Formulario de Registro</h1>
     <form action="{{ route('Registro.store') }}" method="POST">
         @csrf
@@ -21,5 +24,7 @@
         <br>
 
         <button type="submit">Registrar</button>
+        </form
+    </div>
 </body>
 </html>

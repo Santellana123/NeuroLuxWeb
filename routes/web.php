@@ -20,4 +20,7 @@ Route::post('/registro', [AuthController::class, 'store'])->name('Registro.store
 
 Route::get('/', function () {
     return view('Home');
-});
+})->name('Home');
+Route::get('/blog', function () {
+    return view('blog');
+})->name('blog');

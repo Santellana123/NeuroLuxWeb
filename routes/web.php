@@ -2,25 +2,31 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\BlogController;
+use Illuminate\Support\Facades\Auth;
 
-Route::get('/registro', [AuthController::class, 'mostrarRegistro'])->name('Registro');
-Route::get('/login', [AuthController::class, 'mostrarLogin'])->name('Login');
-Route::post('/registro', [AuthController::class, 'store'])->name('Registro.store');
+// Rutas de autenticación de Laravel.
+// Deshabilitamos el registro para usar nuestra ruta personalizada,
+// pero habilitamos las rutas para la verificación de correo electrónico.
+Auth::routes(['register' => false, 'verify' => true]);
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+// Tus rutas de registro personalizadas.
+Route::get('/registro', [AuthController::class, 'mostrarRegistro'])->name('registro');
+Route::post('/registro', [AuthController::class, 'store'])->name('registro.store');
 
-Route::get('/', function () {
-    return view('Home');
-})->name('Home');
-Route::get('/blog', function () {
-    return view('blog');
-})->name('blog');
+// Rutas de tu aplicación
+// La ruta principal debe tener un nombre descriptivo, como 'home'.
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+
+// Rutas protegidas que solo pueden acceder usuarios autenticados
+Route::middleware('auth')->group(function () {
+    Route::post('/blog', [BlogController::class, 'storePost'])->name('blog.storePost');
+    Route::post('/blog/{post}/comment', [BlogController::class, 'storeComment'])->name('blog.storeComment');
+    Route::post('/blog/{post}/like', [BlogController::class, 'toggleLike'])->name('blog.toggleLike');
+    Route::post('/blog/{post}/edit', [BlogController::class, 'updatePost'])->name('blog.updatePost');
+
+    // Nueva ruta para actualizar la foto de perfil
+    Route::post('/profile/update-photo', [AuthController::class, 'updateProfilePhoto'])->name('profile.update-photo');
+});

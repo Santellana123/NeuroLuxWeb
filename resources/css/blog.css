@@ -1,0 +1,166 @@
+/* Estilos generales del cuerpo y HTML */
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: #f1f3f5;
+}
+
+/* Contenedor principal con Flexbox para el layout */
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Estilos de la barra lateral (sidebar) */
+.sidebar {
+    width: 300px; /* Ancho fijo */
+    background: #000;
+    color: #fff;
+    padding-top: 20px;
+    position: sticky; /* Se mantiene en su lugar al hacer scroll */
+    top: 0;
+    height: 100vh; /* Ocupa toda la altura de la vista */
+    overflow-y: auto; /* Permite scroll si el contenido es muy largo */
+}
+.sidebar .logo {
+    font-size: 1.6rem;
+    font-weight: bold;
+    text-align: center;
+    padding: 15px 0;
+    border-radius: 25px;
+    margin: 0 15px 20px 15px;
+    background: #111;
+}
+.sidebar a {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    color: #ccc;
+    border-radius: 25px;
+    margin: 5px 15px;
+    text-decoration: none;
+    transition: background 0.3s, color 0.3s;
+}
+.sidebar a:hover {
+    background: #333;
+    color: white;
+    text-decoration: none;
+}
+.sidebar a .icon {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+/* Estilos del contenido principal */
+.main-content {
+    flex-grow: 1; /* Ocupa el espacio restante */
+    padding: 20px;
+    width: 100%; /* Asegura que el contenido ocupe el ancho disponible */
+}
+
+/* Estilos de la barra superior */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.topbar input[type="search"] {
+    width: 70%;
+    padding: 8px 15px;
+    border-radius: 25px;
+    border: none;
+    background: #e9ecef;
+    font-size: 1rem;
+}
+
+/* ESTILOS AÑADIDOS/MODIFICADOS PARA LOS BOTONES Y NOMBRE DE USUARIO */
+.topbar .auth-buttons a,
+.topbar .user-info span,
+.topbar .user-info button {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    padding: 7px 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+    text-decoration: none; /* Añadido para quitar subrayado en los enlaces */
+    color: #000; /* Añadido para el color del texto */
+}
+
+.topbar .auth-buttons a:hover,
+.topbar .user-info button:hover {
+    background: #e9ecef;
+}
+
+.topbar .auth-buttons {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.topbar .user-info {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+/* FIN DE ESTILOS AÑADIDOS/MODIFICADOS */
+
+/* Estilos de las tarjetas de publicación */
+.post-card {
+    background: #e9ecef;
+    border-radius: 25px;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+}
+.post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 10px;
+}
+.post-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: url('https://via.placeholder.com/40') center center / cover no-repeat;
+}
+.post-username {
+    font-weight: 600;
+    font-size: 1rem;
+}
+.post-tags {
+    color: #666;
+    font-size: 0.85rem;
+    margin-left: 10px;
+}
+.post-text {
+    margin: 10px 0;
+    font-size: 1rem;
+}
+.post-image {
+    width: 100%;
+    border-radius: 20px;
+    height: 150px;
+    object-fit: cover;
+    background: url('https://via.placeholder.com/600x150') center center / cover no-repeat;
+}
+.post-actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 15px;
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+.post-actions span {
+    user-select: none;
+}
+
+/* Estilos para la paginación */
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}

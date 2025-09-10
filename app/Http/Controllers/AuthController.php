@@ -7,7 +7,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Auth\Events\Registered; // Importa la clase del evento
+use Illuminate\Auth\Events\Registered; // Importa el evento para la verificación de correo
+use Illuminate\Validation\Rule; // Importa la regla para validar roles
 
 class AuthController extends Controller
 {
@@ -20,22 +21,28 @@ class AuthController extends Controller
     }
 
     /**
-     * Almacena un nuevo usuario en la base de datos y envía el correo de verificación.
+     * Almacena un nuevo usuario (con rol Y plan) y envía el correo de verificación.
      */
     public function store(Request $request)
     {
-        // Validación de datos
+        // Validación de datos, incluyendo el nuevo campo 'role' y el plan
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
+            'role' => ['required', 'string', Rule::in(['parent', 'specialist'])],
+            // NUEVO: El plan solo es requerido si el rol es 'specialist'
+            'subscription_plan' => ['required_if:role,specialist', 'nullable', 'string', Rule::in(['basic', 'premium'])],
         ]);
         
-        // Crea el usuario
+        // Crea el usuario con el rol y el plan seleccionados
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => $request->role,
+            // NUEVO: Se guarda el plan de suscripción solo si es especialista
+            'subscription_plan' => $request->role === 'specialist' ? $request->subscription_plan : null,
         ]);
         
         // Dispara el evento de registro para enviar el correo de verificación
@@ -44,8 +51,8 @@ class AuthController extends Controller
         // Inicia sesión al nuevo usuario
         Auth::login($user);
         
-        // Redirige al usuario a la página de inicio o donde prefieras
-        return redirect('/')->with('success', '¡Registro exitoso! Por favor, verifica tu correo electrónico.');
+        // Redirige al usuario a la página de inicio
+        return redirect()->route('home')->with('success', '¡Registro exitoso! Por favor, verifica tu correo electrónico.');
     }
 
     /**

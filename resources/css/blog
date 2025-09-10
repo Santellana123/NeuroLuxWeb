@@ -1,0 +1,222 @@
+/* Estilos generales y reseteo */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    background: #f1f3f5;
+}
+
+/* Contenedor principal del layout, ahora centrado */
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Estilos de la barra lateral */
+.sidebar {
+    width: 300px;
+    background: #000;
+    color: #fff;
+    padding-top: 20px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+}
+.sidebar .logo {
+    font-size: 1.6rem;
+    font-weight: bold;
+    text-align: center;
+    padding: 15px 0;
+    border-radius: 25px;
+    margin: 0 15px 20px 15px;
+    background: #111111;
+}
+.sidebar a {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    color: #ccc;
+    border-radius: 25px;
+    margin: 5px 15px;
+    text-decoration: none;
+    transition: background 0.3s, color 0.3s;
+}
+.sidebar a:hover {
+    background: #333;
+    color: white;
+    text-decoration: none;
+}
+.sidebar a .icon {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+/* Estilos del contenido principal, ahora con un ancho máximo y centrado */
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+    max-width: 900px; /* Ancho máximo para el contenido principal */
+    margin: 0 auto; /* Centra el contenedor en la página */
+    width: 100%;
+}
+
+/* Estilos de la barra superior, con más altura y espaciado */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px 0; /* Agrega padding para hacer la barra más alta */
+}
+.topbar input[type="search"] {
+    width: 60%; /* Ajustamos el ancho para dar más espacio a los botones */
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: none;
+    background: #e9ecef;
+    font-size: 1rem;
+}
+.topbar .auth-buttons a,
+.topbar .user-info button {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    padding: 10px 20px; /* Aumenta el padding para hacer los botones más grandes */
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+    text-decoration: none;
+    color: #000;
+}
+.topbar .user-info .create-btn {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.topbar .auth-buttons a:hover,
+.topbar .user-info button:hover {
+    background: #e9ecef;
+}
+
+.topbar .auth-buttons {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+/* Se ha ajustado el espacio entre los elementos del usuario para que se vean mejor */
+.topbar .user-info {
+    display: flex;
+    gap: 10px; /* Reducimos el espacio un poco y separamos con margin */
+    align-items: center;
+}
+
+.topbar .user-info .me-2 {
+    margin-right: 8px !important; /* Más espacio a la derecha del avatar */
+}
+
+.topbar .user-info .fw-bold {
+    margin-right: 10px; /* Espacio extra a la derecha del nombre */
+}
+
+.topbar .user-info button {
+    margin: 0 0px; /* Espacio entre los botones */
+}
+
+.create-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+}
+.create-btn:hover {
+    background: #0056b3;
+}
+
+/* Estilos de las tarjetas de publicación, más estilizadas */
+.post-card {
+    background: #ffffff; /* Fondo blanco para destacar */
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08); /* Sombra sutil */
+    transition: transform 0.2s ease-in-out;
+}
+.post-card:hover {
+    transform: translateY(-5px); /* Efecto al pasar el cursor */
+}
+.post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    gap: 10px;
+}
+.post-avatar {
+    width: 100px; /* Tamaño del avatar ligeramente más grande */
+    height: 100px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+}
+.post-username {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #333;
+}
+.post-tags {
+    color: #666;
+    font-size: 0.85rem;
+    margin-left: auto; /* Alinea las etiquetas a la derecha */
+}
+.post-text {
+    margin: 10px 0;
+    font-size: 1rem;
+    color: #444;
+    line-height: 1.6;
+}
+
+/* Estilos para la imagen, evitando que se deforme */
+.post-image-container {
+    width: 100%;
+    max-height: 400px; /* Altura máxima para evitar imágenes gigantes */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #e9ecef; /* Fondo de contenedor para imágenes transparentes */
+    border-radius: 15px;
+    overflow: hidden;
+    margin-top: 15px;
+}
+.post-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* ¡Clave! Mantiene la relación de aspecto sin deformar */
+    display: block;
+}
+
+.post-actions {
+    margin-top: 15px;
+    display: flex;
+    gap: 20px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #555;
+}
+.post-actions span {
+    user-select: none;
+    transition: color 0.2s;
+}
+.post-actions span:hover {
+    color: #007bff;
+}
+.like-btn.liked {
+    color: red;
+}
+
+/* Estilos para la paginación */
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}

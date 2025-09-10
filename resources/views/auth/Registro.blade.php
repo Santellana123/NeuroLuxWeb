@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Enlace al archivo CSS externo -->
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 </head>
 <body>
@@ -16,12 +15,24 @@
                 @csrf
                 <div class="mb-3">
                     <label for="name" class="form-label">Nombre</label>
-                    <input type="text" class="form-control" id="name" name="name" required>
+                    <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" required>
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Correo electrónico</label>
-                    <input type="email" class="form-control" id="email" name="email" required>
+                    <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required>
                 </div>
+
+                <!-- Selector de Rol (Se mantiene) -->
+                <div class="mb-3">
+                    <label for="role" class="form-label">Soy un...</label>
+                    <select id="role" name="role" class="form-select" required>
+                        <option value="parent" {{ old('role', 'parent') == 'parent' ? 'selected' : '' }}>Padre o Tutor</option>
+                        <option value="specialist" {{ old('role') == 'specialist' ? 'selected' : '' }}>Especialista o Docente</option>
+                    </select>
+                </div>
+
+                <!-- La sección de planes de suscripción ha sido eliminada de este formulario -->
+
                 <div class="mb-3">
                     <label for="password" class="form-label">Contraseña</label>
                     <input type="password" class="form-control" id="password" name="password" required>

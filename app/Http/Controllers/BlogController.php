@@ -2,35 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\Comment;
 use App\Models\Like;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class BlogController extends Controller
 {
     /**
-     * Muestra la página principal del blog con los posts.
+     * Muestra la página principal del blog con todas las publicaciones.
      */
     public function index()
     {
-        // Se cargan los posts junto con los usuarios, comentarios y likes para evitar N+1
-        $posts = Post::with('user', 'comments.user', 'likes')
-            ->latest()
-            ->paginate(10);
-
+        $posts = Post::with(['user', 'likes', 'comments.user'])->latest()->paginate(10);
         return view('blog', compact('posts'));
     }
 
     /**
-     * Almacena un nuevo post en la base de datos.
+     * Almacena una nueva publicación en la base de datos.
      */
     public function storePost(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'image' => 'nullable|image|max:2048',
+            'tags' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $path = null;
@@ -38,76 +37,92 @@ class BlogController extends Controller
             $path = $request->file('image')->store('posts', 'public');
         }
 
-        Post::create([
-            'user_id' => Auth::id(),
-            'title' => $request->title,
-            'content' => $request->content,
+        Auth::user()->posts()->create([
+            'title' => $validated['title'],
+            'content' => $validated['content'],
+            'tags' => $validated['tags'],
             'image_path' => $path,
         ]);
 
-        return redirect()->route('blog.index')->with('success', 'Post creado correctamente.');
+        return redirect()->route('blog.index')->with('success', 'Publicación creada con éxito.');
     }
-    
+
     /**
-     * Actualiza un post existente.
+     * Actualiza una publicación existente.
      */
     public function updatePost(Request $request, Post $post)
     {
-        // Se asegura de que solo el dueño del post pueda editarlo
         if (Auth::id() !== $post->user_id) {
             abort(403, 'Unauthorized action.');
         }
 
-        $request->validate([
+        $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
+            'tags' => 'nullable|string',
+            'image' => 'nullable|image|max:2048',
         ]);
-        
+
+        $path = $post->image_path;
+        if ($request->hasFile('image')) {
+            if ($post->image_path) {
+                Storage::disk('public')->delete($post->image_path);
+            }
+            $path = $request->file('image')->store('posts', 'public');
+        }
+
         $post->update([
-            'title' => $request->title,
-            'content' => $request->content,
+            'title' => $validated['title'],
+            'content' => $validated['content'],
+            'tags' => $validated['tags'],
+            'image_path' => $path,
         ]);
 
         return redirect()->route('blog.index')->with('success', 'Post actualizado correctamente.');
     }
 
     /**
-     * Almacena un nuevo comentario en la base de datos.
-     */
-    public function storeComment(Request $request, Post $post)
-    {
-        $request->validate([
-            'content' => 'required|string',
-        ]);
+     * Almacena un nuevo comentario y lo devuelve como JSON.
+     */public function storeComment(Request $request, Post $post)
+{
+    $validated = $request->validate(['content' => 'required|string']);
 
-        $post->comments()->create([
-            'user_id' => Auth::id(),
-            'content' => $request->content,
-        ]);
+    $comment = $post->comments()->create([
+        'user_id' => Auth::id(),
+        'content' => $validated['content'],
+    ]);
 
-        return redirect()->route('blog.index')->with('success', 'Comentario agregado.');
-    }
-    
+    return $comment->load('user');
+}
+
+public function getComments(Post $post)
+{
+    $comments = $post->comments()->with('user')->latest()->get();
+    return response()->json($comments);
+}
+
     /**
-     * Maneja la acción de dar "me gusta" a un post.
+     * Maneja el "like" o "unlike" de una publicación.
      */
     public function toggleLike(Post $post)
-    {
-        $user = Auth::user();
-        
-        // Busca si el usuario ya le dio "me gusta" al post
-        $like = Like::where('post_id', $post->id)
-                    ->where('user_id', $user->id)
-                    ->first();
+{
+    $user = Auth::user();
 
-        if ($like) {
-            // Si ya existe el "me gusta", lo elimina (un-like)
-            $like->delete();
-            return response()->json(['status' => 'unliked', 'likes_count' => $post->likes()->count()]);
-        } else {
-            // Si no existe, lo crea (like)
-            $post->likes()->create(['user_id' => $user->id]);
-            return response()->json(['status' => 'liked', 'likes_count' => $post->likes()->count()]);
-        }
+    $like = $post->likes()->where('user_id', $user->id)->first();
+
+    if ($like) {
+        $like->delete();
+        return response()->json([
+            'status' => 'unliked',
+            'likes_count' => $post->likes()->count()
+        ]);
+    } else {
+        $post->likes()->create(['user_id' => $user->id]);
+        return response()->json([
+            'status' => 'liked',
+            'likes_count' => $post->likes()->count()
+        ]);
     }
+}
+
 }

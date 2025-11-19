@@ -45,7 +45,7 @@
         <nav class="container mx-auto px-6 py-3">
             <div class="flex justify-between items-center">
                 <a href="{{ route('home') }}" class="flex items-center space-x-2 text-2xl font-bold text-gray-800">
-                    <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    <img src="{{ asset('imagenes/luxinfintie.png') }}" alt="Logo NeuroLuxWeb" class="w-8 h-8 object-contain">
                     <span>NeuroLuxWeb</span>
                 </a>
 

@@ -1,0 +1,19 @@
+/* public/css/blog-custom.css */
+
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+.post-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    flex-shrink: 0;
+}
+
+/* Ajuste para el scroll del modal si es necesario */
+.modal-dialog-scrollable .modal-body {
+    overflow-x: hidden;
+}

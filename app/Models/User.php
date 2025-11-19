@@ -5,16 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-// Se ha eliminado la línea: use Laravel\Cashier\Billable;
 
 class User extends Authenticatable
 {
-    // Se ha eliminado el trait 'Billable' de esta línea
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     */
     protected $fillable = [
         'name',
         'email',
@@ -24,17 +19,11 @@ class User extends Authenticatable
         'subscription_plan',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     */
     protected function casts(): array
     {
         return [
@@ -44,10 +33,18 @@ class User extends Authenticatable
     }
 
     /**
-     * Define la relación: un especialista (User) tiene muchos niños/pacientes (Child).
+     * Un especialista tiene muchos niños.
      */
     public function children()
     {
         return $this->hasMany(Child::class, 'specialist_id');
+    }
+
+    /**
+     * Un usuario (autor) tiene muchos posts.
+     */
+    public function posts()
+    {
+        return $this->hasMany(\App\Models\Post::class, 'user_id');
     }
 }

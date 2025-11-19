@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,7 +12,7 @@
 
 <div class="bg-gray-100">
     <div class="flex min-h-screen">
-        <!-- Sidebar -->
+       
         <aside class="w-64 bg-gray-900 text-gray-300 p-4 fixed h-full shadow-lg">
             <div class="text-white text-2xl font-bold mb-10 pl-2">NeuroLux</div>
             <nav class="space-y-2">
@@ -32,10 +31,10 @@
             </nav>
         </aside>
 
-        <!-- Main -->
+      
         <main class="flex-1 ml-64 p-8">
             <div class="container mx-auto">
-                <!-- Header -->
+              
                 <div class="flex justify-between items-center mb-6">
                     <div>
                         <h1 class="text-3xl font-bold text-gray-800">Dashboard de Seguimiento</h1>
@@ -46,10 +45,10 @@
                     </a>
                 </div>
 
-                <!-- Grid de Contenido (Diseño Modificado) -->
+               
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     
-                    <!-- Columna Izquierda (Principal) -->
+                 
                     <div class="lg:col-span-2 space-y-8">
                         <!-- Ficha del Niño -->
                         <div class="bg-white p-6 rounded-xl shadow-md flex items-center space-x-6">
